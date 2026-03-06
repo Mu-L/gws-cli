@@ -915,17 +915,17 @@ fn run_discovery_scope_picker(
                                 selected.push(s.url.clone());
                             }
                         }
-                    } else if recommended && !full {
-                        // In Recommended mode, use recommended scope selection logic
+                    } else if full && !recommended && !readonly {
+                        // Full Access template: include top-level (non-subsumed) scopes
                         for s in scopes {
-                            if is_recommended_scope(s, &all_shorts, services_filter.is_some()) {
+                            if !is_subsumed_scope(&s.short, &all_shorts) {
                                 selected.push(s.url.clone());
                             }
                         }
                     } else {
-                        // Full or custom: include top-level (non-subsumed) scopes
+                        // Recommended or custom: use recommended scope selection logic
                         for s in scopes {
-                            if !is_subsumed_scope(&s.short, &all_shorts) {
+                            if is_recommended_scope(s, &all_shorts, services_filter.is_some()) {
                                 selected.push(s.url.clone());
                             }
                         }
